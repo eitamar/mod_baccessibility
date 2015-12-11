@@ -2,6 +2,13 @@
 // No direct access
 defined('_JEXEC') or die;
 
+$javascript[] = "//activate plugin after dom ready";
+$javascript[] = "jQuery(document).ready(function ($) {";
+$javascript[] = "    $(this).baccessibility();";
+$javascript[] = "});";
+
+$doc->add
+
 ?>
 
 <nav id="b-acc-toolbarWrap" role="navigation" class="b-acc-hide <?php echo $params['toolbar_side']; ?> close-toolbar">

@@ -8,18 +8,23 @@
     // Create the defaults once
     var pluginName = "baccessibility",
             defaults = {
-                //propertyName: "value",
+                //general options
+                enable_notifications : true,
+                
                 //links underline
                 lu_elm:".b-acc-toggle-underline",
                 lu_tags: "a",
+                
                 //contrast
                 ct_dark_elm: ".b-acc-dark-btn",
                 ct_bright_elm: ".b-acc-bright-btn",
                 ct_grayscale_elm: ".b-acc-grayscale",
                 ct_reset_elm: ".b-acc-contrast-reset",
+                
                 //toolbar
                 tb_wrapper_elm: "#b-acc-toolbarWrap",
                 tb_btn_elm: ".b-acc_hide_toolbar",
+                
                 //fontsizer
                 fs_tags: "p,a,li,h1,h2,h3,h4",
                 fs_size_jump: 2,
@@ -227,8 +232,3 @@
     };
 
 })(jQuery, window, document);
-
-//activate plugin after dom ready
-jQuery(document).ready(function ($) {
-    $(this).baccessibility();
-});
