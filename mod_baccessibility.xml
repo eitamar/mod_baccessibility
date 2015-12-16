@@ -71,6 +71,17 @@
 				</field>
 			</fieldset>
             <fieldset name="BACCESSIBILITY_CONFIGURATION">
+                
+                <field name="use_notifications"
+                       type="radio" 
+                       class="btn-group btn-group-yesno"
+                       label="MOD_BACCESSIBILITY_FIELD_CONFIG_USE_NOTIFICATIONS_LABEL"
+                       description="MOD_BACCESSIBILITY_FIELD_CONFIG_USE_NOTIFICATIONS_DESC" 
+                       default="1">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
                 <field name="use_awesome"
                        type="radio" 
                        class="btn-group btn-group-yesno"

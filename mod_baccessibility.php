@@ -30,4 +30,11 @@ if( $params->get('use_awesome') ) {
 $doc->addScript( $modBaseUrl . '/asset/js/baccessibility.jquery.js' );
 $doc->addScript( $modBaseUrl . '/asset/js/grayscale.js' );
 
+if( $params->get('use_notifications') ) {
+   $doc->addScript( $modBaseUrl . '/asset/js/humane.min.js' );
+   $doc->addStyleSheet( $modBaseUrl . '/asset/css/humane/libnotify.css');
+   JText::script('JYES');
+}
+
+
 require JModuleHelper::getLayoutPath('mod_baccessibility');

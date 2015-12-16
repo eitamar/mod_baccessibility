@@ -9,7 +9,7 @@
     var pluginName = "baccessibility",
             defaults = {
                 //general options
-                enable_notifications : true,
+                use_notifications : true,
                 
                 //links underline
                 lu_elm:".b-acc-toggle-underline",
@@ -34,7 +34,7 @@
                 
 
             };
-
+    
     // plugin constructor
     function Plugin(element, options) {
         this.element = element;
@@ -52,54 +52,56 @@
             
             //console.log("start init baccessesibility");
 
-            this.initToolbar(this.settings);
-            this.initFontSizer(this.settings);
-            this.initContrast(this.settings);
-            this.initLinksUnderline(this.settings);
+            this.initToolbar(this);
+            this.initFontSizer(this);
+            this.initContrast(this);
+            this.initLinksUnderline(this);
                         
             //console.log("end init baccessesibility");
             
         },
                 
-        initToolbar: function (plg_settings){
+        initToolbar: function (plg){
             
-            $(plg_settings.tb_btn_elm).click(function (event) {
+            $(plg.settings.tb_btn_elm).click(function (event) {
                 
-                $(plg_settings.tb_wrapper_elm).toggleClass("close-toolbar");
+                $(plg.settings.tb_wrapper_elm).toggleClass("close-toolbar");
 
-                if ($(plg_settings.tb_wrapper_elm).hasClass('close-toolbar')) {
-                    $(plg_settings.tb_wrapper_elm).children("a, button,h3").attr('tabindex', '-1');
+                if ($(plg.settings.tb_wrapper_elm).hasClass('close-toolbar')) {
+                    $(plg.settings.tb_wrapper_elm).children("a, button,h3").attr('tabindex', '-1');
                 }
                 else {
-                    $(plg_settings.tb_wrapper_elm).children("a, button,h3").attr('tabindex', '0');
+                    $(plg.settings.tb_wrapper_elm).children("a, button,h3").attr('tabindex', '0');
                 }
 
             });
         },
         
-        initLinksUnderline: function(plg_settings){
+        initLinksUnderline: function(plg){
                         
-            if( $(plg_settings.tb_wrapper_elm).attr('data-underlines') ) {
-                $(plg_settings.lu_tags).css('text-decoration', 'underline');
+            if( $(plg.settings.tb_wrapper_elm).attr('data-underlines') ) {
+                $(plg.settings.lu_tags).css('text-decoration', 'underline');
             }
 
             // toggle underline
 
-            $(plg_settings.lu_elm).toggle(function () {
-                $(plg_settings.lu_tags).css('text-decoration', 'underline');
+            $(plg.settings.lu_elm).toggle(function () {
+                $(plg.settings.lu_tags).css('text-decoration', 'underline');
+                plg.notify('underline links ON');
             }, function() {
-                $(plg_settings.lu_tags).css('text-decoration', 'none');
+                $(plg.settings.lu_tags).css('text-decoration', 'none');
+               plg.notify('underline links OFF');
             });
         },
         
-        initContrast: function(plg_settings){
+        initContrast: function(plg){
             
             var b_acc_dark =  localStorage.getItem('b-acc_dark');
             var b_acc_bright = localStorage.getItem('b-acc_bright');
             var b_acc_grayscale = localStorage.getItem('b-acc_grayscale');
             
             //dark mode
-            $( plg_settings.ct_dark_elm ).click( function () {
+            $( plg.settings.ct_dark_elm ).click( function () {
                 localStorage.removeItem('b-acc_bright');
                 localStorage.removeItem('b-acc_grayscale');
                 localStorage.setItem('b-acc_dark','dark',1);
@@ -108,11 +110,13 @@
                     .removeClass( 'b-acc-bright b-acc-grayscale' )
                     .addClass( 'b-acc-dark' );
 
-                $( plg_settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
+                $( plg.settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
+                
+                plg.notify('Dark mode ON');
             });
             
             //bright mode
-            $( plg_settings.ct_bright_elm ).click( this ,function () {
+            $( plg.settings.ct_bright_elm ).click( this ,function () {
                 localStorage.removeItem( 'b-acc_dark' );
                 localStorage.removeItem( 'b-acc_grayscale' );
                 localStorage.setItem('b-acc_bright','bright',1);
@@ -121,11 +125,13 @@
                     .removeClass( 'b-acc-dark b-acc-grayscale' )
                     .addClass( 'b-acc-bright' );
 
-                $( plg_settings.ct_reset_elm).removeClass( 'b-acc-hide' );
+                $( plg.settings.ct_reset_elm).removeClass( 'b-acc-hide' );
+                
+                plg.notify('Bright mode ON');
             });
             
             //grayscale
-            $( plg_settings.ct_grayscale_elm ).click( function () {
+            $( plg.settings.ct_grayscale_elm ).click( function () {
                 localStorage.removeItem( 'b-acc_dark' );
                 localStorage.removeItem( 'b-acc_bright' );
                 localStorage.setItem('b-acc_grayscale','grayscale',1);
@@ -134,20 +140,24 @@
                         .removeClass( 'b-acc-dark b-acc-bright' )
                         .addClass("b-acc-grayscale");
 
-                $( plg_settings.ct_reset_elm).removeClass('b-acc-hide');
+                $( plg.settings.ct_reset_elm).removeClass('b-acc-hide');
+                
+                plg.notify('Grayscale mode ON');
 
             });
             
             //contrast reset
-            $(plg_settings.ct_reset_elm ).click(this, function () {
+            $(plg.settings.ct_reset_elm ).click(this, function () {
             
                 localStorage.removeItem( 'b-acc_dark' );
                 localStorage.removeItem( 'b-acc_bright' );
                 localStorage.removeItem( 'b-acc_grayscale' );
 
-                $(plg_settings.ct_reset_elm).addClass( 'b-acc-hide' );
+                $(plg.settings.ct_reset_elm).addClass( 'b-acc-hide' );
 
                 $( 'body' ).removeClass( 'b-acc-dark b-acc-bright b-acc-grayscale' );
+                
+                plg.notify('Contrast reset to default');
             });
             
             //initialize from localStorage
@@ -156,7 +166,7 @@
                     .removeClass( 'b-acc-bright b-acc-grayscale' )
                     .addClass( 'b-acc-dark' );
 
-                $( plg_settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
+                $( plg.settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
             }
 
             if( b_acc_bright ) {
@@ -164,7 +174,7 @@
                     .removeClass( 'b-acc-dark b-acc-grayscale' )
                     .addClass( 'b-acc-bright' );
 
-                $( plg_settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
+                $( plg.settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
             }
 
             if( b_acc_grayscale ) {
@@ -172,50 +182,63 @@
                     .removeClass( 'b-acc-dark b-acc-bright' )
                     .addClass( 'b-acc-grayscale' );
 
-                $( plg_settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
+                $( plg.settings.ct_reset_elm ).removeClass( 'b-acc-hide' );
             }
             
         },
                 
-        initFontSizer: function (plg_settings) {
+        initFontSizer: function (plg) {
             
             //increase
-            $(plg_settings.fs_increase_elm).click(function () {
+            $(plg.settings.fs_increase_elm).click(function () {
 
-                $(plg_settings.fs_tags).filter(function (index, elm) {
+                $(plg.settings.fs_tags).filter(function (index, elm) {
 
                     $(elm).css('font-size', function () {
-                        return parseInt($(elm).css('font-size')) + plg_settings.fs_size_jump + 'px';
+                        return parseInt($(elm).css('font-size')) + plg.settings.fs_size_jump + 'px';
                     });
                 });
 
-                $(plg_settings.fs_reset_elm).removeClass('b-acc-hide');
+                $(plg.settings.fs_reset_elm).removeClass('b-acc-hide');
+                
+                plg.notify('Font size increased');
 
             });
 
             // decrease
-            $(plg_settings.fs_decrease_elm).click(function () {
+            $(plg.settings.fs_decrease_elm).click(function () {
 
-                $(plg_settings.fs_tags).filter(function (index) {
+                $(plg.settings.fs_tags).filter(function (index) {
                     $(this).css('font-size', function () {
-                        return parseInt($(this).css('font-size')) - plg_settings.fs_size_jump + 'px';
+                        return parseInt($(this).css('font-size')) - plg.settings.fs_size_jump + 'px';
                     });
                 });
 
-                $(plg_settings.fs_reset_elm).removeClass('b-acc-hide');
+                $(plg.settings.fs_reset_elm).removeClass('b-acc-hide');
+
+                plg.notify('Font size Decreased');
 
             });
 
             // reset to default
-            $(plg_settings.fs_reset_elm).click(function () {
+            $(plg.settings.fs_reset_elm).click(function () {
 
-                $(plg_settings.fs_tags).filter(function (index) {
+                $(plg.settings.fs_tags).filter(function (index) {
                     $(this).attr("style", "");
                 });
                 // hide reset button after pressing
-                $(plg_settings.fs_reset_elm).addClass('b-acc-hide');
+                $(plg.settings.fs_reset_elm).addClass('b-acc-hide');
+                
+                plg.notify('Font reset to default');
+
 
             });
+        },
+        
+        notify : function(msg , options){
+            if(this.settings.use_notifications){
+                humane.log(msg , options)
+            }
         }
         
         

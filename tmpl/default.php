@@ -2,12 +2,38 @@
 // No direct access
 defined('_JEXEC') or die;
 
-$javascript[] = "//activate plugin after dom ready";
+//$javascript[] = "//activate plugin after dom ready";
 $javascript[] = "jQuery(document).ready(function ($) {";
-$javascript[] = "    $(this).baccessibility();";
+$javascript[] = "    $(this).baccessibility({";
+//general options
+$javascript[] = "       use_notifications : ".( $params->get('use_notifications') ? 'true':'false' ).",";
+
+//links underline
+$javascript[] = "       lu_elm:\".b-acc-toggle-underline\",";
+$javascript[] = "       lu_tags: \"a\",";
+
+//contrast
+$javascript[] = "       ct_dark_elm: \".b-acc-dark-btn\",";
+$javascript[] = "       ct_bright_elm: \".b-acc-bright-btn\",";
+$javascript[] = "       ct_grayscale_elm: \".b-acc-grayscale\",";
+$javascript[] = "       ct_reset_elm: \".b-acc-contrast-reset\",";
+
+//toolbar
+$javascript[] = "       tb_wrapper_elm: \"#b-acc-toolbarWrap\",";
+$javascript[] = "       tb_btn_elm: \".b-acc_hide_toolbar\",";
+
+//fontsizer
+$javascript[] = "       fs_tags: \"".$params->get('fontsizer_tags')."\",";
+$javascript[] = "       fs_size_jump: ".$params->get('fontsizer_size').",";
+$javascript[] = "       fs_increase_elm: \"#b-acc-fontsizer button.big-letter\",";
+$javascript[] = "       fs_decrease_elm: \"#b-acc-fontsizer button.small-letter\",";
+$javascript[] = "       fs_reset_elm: \".b-acc-font-reset\",";
+
+
+$javascript[] = "   });";
 $javascript[] = "});";
 
-$doc->add
+$doc->addScriptDeclaration(implode(' ', $javascript));
 
 ?>
 
